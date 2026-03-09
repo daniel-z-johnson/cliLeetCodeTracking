@@ -10,24 +10,26 @@ type JsonDB struct {
 	content  map[string][]string
 }
 
-func NewJsonDB(fileName string) *JsonDB {
+func NewJsonDB(fileName string) (*JsonDB, error) {
 	f1, err := os.Open(fileName)
 	if err != nil {
-		return &JsonDB{
-			fileName: fileName,
-			content:  make(map[string][]string),
+		if os.IsNotExist(err) {
+			return &JsonDB{
+				fileName: fileName,
+				content:  make(map[string][]string),
+			}, nil
 		}
+		return nil, err
 	}
 	defer f1.Close()
 	simpleDB := make(map[string][]string)
-	err = json.NewDecoder(f1).Decode(&simpleDB)
-	if err != nil {
+	if err := json.NewDecoder(f1).Decode(&simpleDB); err != nil {
 		simpleDB = make(map[string][]string)
 	}
 	return &JsonDB{
 		fileName: fileName,
 		content:  simpleDB,
-	}
+	}, nil
 }
 
 func (j *JsonDB) Read(problem string) []string {
