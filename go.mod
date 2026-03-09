@@ -1,4 +1,4 @@
-module github.com/daniel-z-johnson/cliLeetCodeTracking
+module github.com/daniel-z-johnson/clileetcodetracking
 
 go 1.26.1
 
