@@ -37,7 +37,9 @@ func (j *JsonDB) Read(problem string) []string {
 	if !ok {
 		return []string{}
 	}
-	return dates
+	copied := make([]string, len(dates))
+	copy(copied, dates)
+	return copied
 }
 
 func (j *JsonDB) Write(problem string, date string) error {
